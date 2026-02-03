@@ -131,7 +131,7 @@ jobs:
           cd deps
           #######################################./clean.sh
           # prepare boost library
-          cp ~/skaled_deps_predownloaded/boost_1_87_0.tar.bz2 ../libconsensus/libBLS/deps/boost_1_87_0.tar.bz2
+          curl -L https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.bz2 -o ../libconsensus/libBLS/deps/boost_1_87_0.tar.bz2          
           rm -f ./libwebsockets-from-git.tar.gz
           ./build.sh DEBUG=1 PARALLEL_COUNT=$(nproc)
           cd ..
