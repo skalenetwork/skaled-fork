@@ -36,7 +36,11 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       - name: checkout
         uses: actions/checkout@v2
-
+      - name: update apt
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test || true
+          sudo apt-get install -y ccache || true
+          sudo apt-get update || true
       - name: Cache apt packages
         uses: actions/cache@v4.2.0
         with:
@@ -44,10 +48,7 @@ jobs:
             /var/cache/apt/archives
           key: ${{ runner.os }}-apt-cache
           ttl: 1000000 # purge cache every 1000000 seconds (10 days). This is to pull updated packages
-      - name: update apt
-        run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test || true
-          sudo apt-get update || true
+
       - name: install packages
         run: |
           sudo apt-get -y remove libzmq* || true
