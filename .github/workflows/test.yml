@@ -37,6 +37,7 @@ jobs:
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test || true
           sudo apt-get install -y ccache yasm libgnutls28-dev gperf gettext || true
           sudo apt-get update || true
+          
       - name: Cache apt packages
         uses: actions/cache@v4.2.0
         with:
@@ -94,6 +95,7 @@ jobs:
           echo "Checking installed lcov version..."
           which lcov
           lcov --version
+          ldconfig -p | grep -E 'liblz4|libbz2' || true
 
       - name: Submodule update
         run: |
