@@ -30,8 +30,8 @@ jobs:
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-      - name: checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v6
+        submodules: recursive
       - name: Install packages
         run: |
           sudo apt install autoconf build-essential cmake libprocps-dev libtool texinfo wget yasm flex bison btrfs-progs python3 python3-pip gawk git vim doxygen
