@@ -39,7 +39,7 @@ jobs:
           sudo apt install make build-essential cmake pkg-config libgnutls28-dev libssl-dev unzip zlib1g-dev libgcrypt20-dev gcc-11 g++-11 gperf clang-format-11 gnutls-dev
           sudo apt install nettle-dev libhiredis-dev redis-server google-perftools lcov
           sudo apt-get install libv8-dev
-          sudo apt-get purge -y libbz2-dev && sudo apt-get autoremove -y
+          sudo apt-get purge -y libbz2-dev liblz4-dev && sudo apt-get autoremove -y
           sudo apt-get install liblzma-dev
       - name: Set gcc
         run: |
