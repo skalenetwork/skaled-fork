@@ -94,14 +94,6 @@ jobs:
           sudo update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-11 11
           gcc --version
 
-      - name: Cache ccache
-        uses: actions/cache@v4
-        with:
-          path: ~/.ccache
-          key: ccache-${{ runner.os }}-${{ github.ref_name }}-${{ matrix.name }}
-          restore-keys: |
-            ccache-${{ runner.os }}-${{ github.ref_name }}-
-            ccache-${{ runner.os }}-
 
       - name: Build dependencies
         run: |
@@ -109,7 +101,6 @@ jobs:
           cd deps
           curl -L https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.bz2 \
             -o ../libconsensus/libBLS/deps/boost_1_87_0.tar.bz2
-          rm -f ./libwebsockets-from-git.tar.gz
           ./build.sh DEBUG=1 PARALLEL_COUNT=$(nproc)
           cd ..
 
@@ -135,6 +126,3 @@ jobs:
           build_dir: ${{ matrix.build_dir }}
           mode: ${{ matrix.mode }}
           verbosity: "4"
-
-      - name: Print ccache stats
-        run: ccache --show-stats
