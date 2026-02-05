@@ -40,6 +40,7 @@ jobs:
           sudo apt install nettle-dev libhiredis-dev redis-server google-perftools lcov
           sudo apt-get install libv8-dev
           sudo apt-get purge -y libbz2-dev && sudo apt-get autoremove -y
+          sudo apt-get install liblzma-dev
       - name: Set gcc
         run: |
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11
