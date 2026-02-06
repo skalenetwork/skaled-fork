@@ -49,16 +49,6 @@ jobs:
             build_dir: build
             cmake_args: "-DFAIR=1 -DHISTORIC_STATE=1"
             mode: historic
-
-          - name: BITE
-            build_dir: build
-            cmake_args: "-DBITE=1"
-            mode: full
-
-          - name: BITE-historic
-            build_dir: build
-            cmake_args: "-DBITE=1 -DHISTORIC_STATE=1"
-            mode: historic
             
           - name: BITE2
             build_dir: build
