@@ -73,11 +73,10 @@ jobs:
       - name: Install packages
         run: |
           sudo apt update
-          sudo apt autoremove -y     # removing preinstalled deps from the runner
           sudo apt install -y autoconf build-essential cmake libprocps-dev libtool texinfo wget yasm flex bison btrfs-progs python3 python3-pip gawk git vim doxygen
           sudo apt install -y make pkg-config libgnutls28-dev libssl-dev unzip zlib1g-dev libgcrypt20-dev gcc-11 g++-11 gperf clang-format-11 gnutls-dev
           sudo apt install -y nettle-dev libhiredis-dev redis-server google-perftools lcov libv8-dev 
-          sudo apt install -y liblzma-dev
+          sudo apt purge -y libbz2-dev liblz4-dev
 
       - name: Set gcc
         run: |
@@ -90,6 +89,7 @@ jobs:
 
       - name: Build dependencies
         run: |
+          cd deps
           ./build.sh DEBUG=1 PARALLEL_COUNT=$(nproc)
           cd ..
 
