@@ -61,6 +61,11 @@ jobs:
             mode: historic
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+          
       - uses: actions/checkout@v6
         with:
           submodules: recursive
@@ -68,12 +73,11 @@ jobs:
       - name: Install packages
         run: |
           sudo apt update
+          sudo apt autoremove -y     # removing preinstalled deps from the runner
           sudo apt install -y autoconf build-essential cmake libprocps-dev libtool texinfo wget yasm flex bison btrfs-progs python3 python3-pip gawk git vim doxygen
-          sudo apt install -y make build-essential cmake pkg-config libgnutls28-dev libssl-dev unzip zlib1g-dev libgcrypt20-dev gcc-11 g++-11 gperf clang-format-11 gnutls-dev
-          sudo apt install -y nettle-dev libhiredis-dev redis-server google-perftools lcov
-          sudo apt-get install -y libv8-dev
-          sudo apt-get purge -y libbz2-dev liblz4-dev && sudo apt-get autoremove -y
-          sudo apt-get install -y liblzma-dev
+          sudo apt install -y make pkg-config libgnutls28-dev libssl-dev unzip zlib1g-dev libgcrypt20-dev gcc-11 g++-11 gperf clang-format-11 gnutls-dev
+          sudo apt install -y nettle-dev libhiredis-dev redis-server google-perftools lcov libv8-dev 
+          sudo apt install -y liblzma-dev
 
       - name: Set gcc
         run: |
@@ -84,13 +88,8 @@ jobs:
           sudo update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-11 11
           gcc --version
 
-
       - name: Build dependencies
         run: |
-          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-          cd deps
-          curl -L https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.bz2 \
-            -o ../libconsensus/libBLS/deps/boost_1_87_0.tar.bz2
           ./build.sh DEBUG=1 PARALLEL_COUNT=$(nproc)
           cd ..
 
