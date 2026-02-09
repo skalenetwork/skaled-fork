@@ -5,7 +5,7 @@ on:
       - 'master'
       - 'beta'
       - 'stable'
-
+ 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
