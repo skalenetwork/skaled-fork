@@ -46,8 +46,6 @@ jobs:
     outputs:
       version: ${{ env.VERSION }}
     env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       BUILD_TYPE: ${{ inputs.build_type }}
       PLAIN_VERSION: ${{ inputs.use_plain_version }}
       BRANCH: ${{ inputs.branch_name }}
@@ -176,10 +174,12 @@ jobs:
 
       - name: Build and publish docker image
         env:
+          DOCKER_USERNAME: test
+          DOCKER_PASSWORD: test
           VERSION: ${{ env.VERSION }}
         run: |
           cp build/skaled/skaled scripts/skale_build/executable/
-          # bash ./scripts/build_and_publish.sh
+          bash ./scripts/build_and_publish.sh
   
       - name: Upload skaled binary as artifact
         uses: actions/upload-artifact@v4
