@@ -50,6 +50,8 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       BUILD_TYPE: ${{ inputs.build_type }}
       PLAIN_VERSION: ${{ inputs.use_plain_version }}
+      CC: gcc-11
+      CXX: g++-11
     steps:
       - name: Prepare workflow variables
         if: inputs.node_type == 'core'
@@ -123,6 +125,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           export CMAKE_OPTS="-DBITE2=1 -DHISTORIC_STATE=1 ${{ inputs.cmake_options }}"
           echo "CMAKE_OPTS=$CMAKE_OPTS" >> $GITHUB_ENV
+      
       - uses: actions/checkout@v6
         with:
           submodules: recursive
@@ -140,18 +143,15 @@ jobs:
 
       - name: Set gcc
         run: |
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11
-          sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-11 11
-          sudo update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-11 11
-          sudo update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-11 11
+          echo $CC
+          echo $CXX
           gcc --version
 
       - name: Build dependencies
         run: |
           [[ $BUILD_TYPE = "Debug" ]] && export DEBUG_FLAG=1 || export DEBUG_FLAG=0
           cd deps
-          ./build.sh DEBUG=1 PARALLEL_COUNT=$(nproc) DEBUG=$DEBUG_FLAG
+          ./build.sh PARALLEL_COUNT=$(nproc) DEBUG=$DEBUG_FLAG
           cd ..
 
       - name: Build
