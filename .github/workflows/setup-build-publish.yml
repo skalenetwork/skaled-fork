@@ -50,6 +50,7 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       BUILD_TYPE: ${{ inputs.build_type }}
       PLAIN_VERSION: ${{ inputs.use_plain_version }}
+      BRANCH: ${{ inputs.branch_name }}
       CC: gcc-11
       CXX: g++-11
     steps:
@@ -149,7 +150,7 @@ jobs:
           ./build.sh PARALLEL_COUNT=$(nproc) DEBUG=$DEBUG_FLAG
           cd ..
 
-      - name: Build
+      - name: Build skaled binary
         uses: ./.github/actions/cmake-build
         with:
           build_dir: build
@@ -173,13 +174,11 @@ jobs:
           fi
           cd ..
 
-      - name: Build and publish container
+      - name: Build and publish docker image
         env:
           VERSION: ${{ env.VERSION }}
         run: |
           cp build/skaled/skaled scripts/skale_build/executable/
-          export BRANCH=${{ inputs.branch_name }}
-          export RELEASE=true
           # bash ./scripts/build_and_publish.sh
   
       - name: Upload skaled binary as artifact
