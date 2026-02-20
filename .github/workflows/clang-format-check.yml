@@ -6,6 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Fail, if older Github Actions machine. Click "Re-run jobs"
+      run: cat /proc/cpuinfo | grep avx512
     - uses: DoozyX/clang-format-lint-action@v0.16.2
       with:
         source: '.'
